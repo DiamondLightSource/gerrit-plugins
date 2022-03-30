@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'gerrit-plugins-*' # tags matching maven-release-plugin default naming
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: mvn -B verify
+
+      - name: Release using Github CLI
+        run: echo ${GITHUB_REF} && gh release create ${GITHUB_REF##*/} --generate-notes */target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
