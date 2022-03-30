@@ -47,6 +47,7 @@ import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.account.AccountResolver;
 import com.google.gerrit.server.account.AccountResolver.UnresolvableAccountException;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
@@ -57,8 +58,6 @@ public class DLSUnverify
 
 	private static final Logger logger = LoggerFactory.getLogger(DLSUnverify.class);
 
-	private static final String BOT_USERNAME = "admin";
-
 	@Inject
 	private OneOffRequestContext requestContext;
 
@@ -67,6 +66,9 @@ public class DLSUnverify
 
 	@Inject
 	private AccountResolver accountResolver;
+
+	@Inject
+	private PluginConfigFactory cfg;
 
 	private DeleteVoteInput deleteOptions = new DeleteVoteInput();
 
@@ -191,7 +193,8 @@ public class DLSUnverify
 			if ((a.value.equals(1)) || (a.value.equals(-1))) {
 				logger.info("Change {} - removing Verified:{} vote by \"{}/{}\"", c._number, a.value, a.username,
 						a.name);
-				Account.Id gerritDLSBot = accountResolver.resolve(BOT_USERNAME).asUnique().account().id();
+				String botUsername = cfg.getFromGerritConfig("DLS-unverify").getString("gerrit-bot-username");
+				Account.Id gerritDLSBot = accountResolver.resolve(botUsername).asUnique().account().id();
 				try (ManualRequestContext ctx = requestContext.openAs(gerritDLSBot)) {
 					gApi.changes().id(c.id).reviewer(a.username).deleteVote(deleteOptions);
 					unverifyCount += 1;
