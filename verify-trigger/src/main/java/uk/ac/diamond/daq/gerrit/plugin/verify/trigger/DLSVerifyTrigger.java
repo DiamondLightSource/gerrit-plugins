@@ -44,11 +44,6 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DLSVerifyTrigger.class);
 
-	// only accept requests from users in one (or more) of these groups
-	private static final List<String> VALID_GROUP_UUIDS = Arrays.asList("0000000000000000000000000000000000000000",
-			"0000000000000000000000000000000000000001", "0000000000000000000000000000000000000002",
-			"0000000000000000000000000000000000000003", "0000000000000000000000000000000000000004");
-
 	// only accept requests for changes in these projects
 	private static final List<String> VALID_PROJECT_PREFIXES = Arrays.asList("prod1/", "prod1/", "prod1/", "prod1/");
 	@Inject
@@ -87,7 +82,7 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 		// User must be in an appropriate Group
 		Set<String> groups = user.getEffectiveGroups().getKnownGroups().stream().map(UUID::get)
 				.collect(Collectors.toSet()); // get UUIDs for groups the user is in
-		if (groups.stream().noneMatch(VALID_GROUP_UUIDS::contains)) {
+		if (groups.stream().noneMatch(validGroupUuids()::contains)) {
 			logger.warn("Request rejected - change={}, user={} is not in an authorised group", change.getId(),
 					userDesc);
 			throw new AuthException("Request rejected - change " + change.getId() + ", user " + userDesc
@@ -118,6 +113,13 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 				projectName, change.getTopic());
 		return Response.ok("");
 
+	}
+
+	/**
+	 * only accept requests from users in one (or more) of these groups
+	 */
+	private List<String> validGroupUuids() {
+		return Arrays.asList(cfg.getFromGerritConfig("DLS-verify-trigger").getStringList("permitted-group"));
 	}
 
 }
