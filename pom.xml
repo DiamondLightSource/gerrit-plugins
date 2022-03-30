@@ -17,7 +17,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/DiamondLightSource/gerrit-plugins.git</connection>
-		<developerConnection>scm:git:git@github.com/DiamondLightSource/gerrit-plugins.git</developerConnection>
+		<developerConnection>scm:git:git@github.com:DiamondLightSource/gerrit-plugins.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
