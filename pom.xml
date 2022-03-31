@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<Gerrit-ApiVersion>3.2.7</Gerrit-ApiVersion>
+		<Gerrit-ApiVersion>3.5.1</Gerrit-ApiVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -31,6 +31,7 @@
 					<version>3.8.0</version>
 					<configuration>
 						<release>11</release>
+						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>
