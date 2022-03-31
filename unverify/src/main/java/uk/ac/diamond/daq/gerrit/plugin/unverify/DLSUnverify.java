@@ -181,7 +181,7 @@ public class DLSUnverify
 			return 0;
 		}
 		LabelInfo verifiedLabel = c.labels.get("Verified");
-		if (verifiedLabel.all == null) {
+		if (verifiedLabel == null || verifiedLabel.all == null) {
 			logger.error("Change {} - no Verified votes", c._number);
 			// no votes removed
 			return 0;
@@ -190,6 +190,10 @@ public class DLSUnverify
 		int unverifyCount = 0;
 
 		for (ApprovalInfo a : verifiedLabel.all) {
+			if (a.value == null) {
+				logger.debug("Change {} - Verified not permitted for \"{}/{}\"", c._number, a.username, a.name);
+				continue;
+			}
 			if ((a.value.equals(1)) || (a.value.equals(-1))) {
 				logger.info("Change {} - removing Verified:{} vote by \"{}/{}\"", c._number, a.value, a.username,
 						a.name);
