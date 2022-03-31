@@ -44,8 +44,6 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DLSVerifyTrigger.class);
 
-	// only accept requests for changes in these projects
-	private static final List<String> VALID_PROJECT_PREFIXES = Arrays.asList("prod1/", "prod1/", "prod1/", "prod1/");
 	@Inject
 	private PluginConfigFactory cfg;
 
@@ -73,7 +71,7 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 		}
 		// the change must be in one of the appropriate repositories
 		String projectName = change.getProject().get();
-		if (!(VALID_PROJECT_PREFIXES.stream().anyMatch(s -> projectName.startsWith(s)))) {
+		if (!(validProjectPrefixes().stream().anyMatch(s -> projectName.startsWith(s)))) {
 			logger.warn("Request rejected - change={} in non-triggerable project={}, user={}", change.getId(),
 					projectName, userDesc);
 			throw new AuthException(
@@ -120,6 +118,13 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 	 */
 	private List<String> validGroupUuids() {
 		return Arrays.asList(cfg.getFromGerritConfig("DLS-verify-trigger").getStringList("permitted-group"));
+	}
+
+	/**
+	 * only accept requests for changes in these projects
+	 */
+	private List<String> validProjectPrefixes() {
+		return Arrays.asList(cfg.getFromGerritConfig("DLS-verify-trigger").getStringList("project-prefix"));
 	}
 
 }
