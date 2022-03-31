@@ -10,7 +10,7 @@ Clone repository and import as Maven project into IDE of choice.
 
 The project is versioned independently of the Gerrit API version it targets. It is intended to use semantic versioning.
 This may be reviewed at a later date to use the versioning scheme that Gerrit uses for its own plugins (matching the
-Gerrit API version). The initial version of these plugins is 1.2, releases prior to this are internal (before plugins
+Gerrit API version). The initial version of these plugins is 1.1.0, releases prior to this are internal (before plugins
 converted to Java).
 
 ## Making a release
