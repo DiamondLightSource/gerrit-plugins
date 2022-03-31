@@ -88,6 +88,8 @@ public class DLSVerifyTrigger implements RestReadView<ChangeResource> {
 		}
 
 		String gerritHostname = (new URL(webUrl.get())).getHost();
+		// These two keys in hostname specific plugin section (not with other config)
+		// due to '.'s in hostnames
 		String jenkinsUrl = cfg.getFromGerritConfig("DLS-verify-trigger-" + gerritHostname)
 				.getString("jenkins-job-url");
 		String jenkinsToken = cfg.getFromGerritConfig("DLS-verify-trigger-" + gerritHostname)
