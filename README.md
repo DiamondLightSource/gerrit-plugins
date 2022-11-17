@@ -13,6 +13,12 @@ This may be reviewed at a later date to use the versioning scheme that Gerrit us
 Gerrit API version). The initial version of these plugins is 1.1.0, releases prior to this are internal (before plugins
 converted to Java).
 
+To change the version in the multi-module project can use:
+
+```
+mvn versions:set -DnewVersion=1.4.0-SNAPSHOT
+```
+
 ## Making a release
 
 This project is handled by the `maven-release-plugin`. To create a release use:
@@ -34,7 +40,7 @@ This will ask for some input:
   version. e.g. `1.1.1-SNAPSHOT`
 
 This will prompt for release versions as will as setting the `SNAPSHOT` version for the next release. This process also
-creates a tag and pushes it.
+creates a tag and pushes it. It also pushes the branch but doesn't update locally so a `git fetch` should be run.
 
 GitHub actions have been configured to build the project and also to create a GitHub release when tags are pushed
 (matching the specific prefix). This allows the individual plugin jars to be downloaded from the release page.
