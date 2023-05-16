@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<Gerrit-ApiVersion>3.7.2</Gerrit-ApiVersion>
+		<Gerrit-ApiVersion>3.7.3</Gerrit-ApiVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
