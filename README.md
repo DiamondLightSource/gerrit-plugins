@@ -42,5 +42,8 @@ This will ask for some input:
 This will prompt for release versions as will as setting the `SNAPSHOT` version for the next release. This process also
 creates a tag and pushes it. It also pushes the branch but doesn't update locally so a `git fetch` should be run.
 
+After this there will be some prepared release files in the repository which can be cleaned with `mvn release:clean`.
+This is required if another release is also made in the future in the same repository clone.
+
 GitHub actions have been configured to build the project and also to create a GitHub release when tags are pushed
 (matching the specific prefix). This allows the individual plugin jars to be downloaded from the release page.
